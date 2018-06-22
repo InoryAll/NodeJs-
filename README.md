@@ -15,14 +15,24 @@
  - 设置对象的原型—Reflect.setPrototypeOf(obj, prototype)与Object.setPrototypeOf(obj, prototype) 
 2. js中的getter与setter
 
-     `
-     var obj = { get sex() { return this._sex }, set sex(val) { this._sex = val } };
-     或者 var obj = Object.create(null, { sex: { get: function() { return this._sex; }, set: function(val) { this._sex = val; } } };);
-     `
-     
-     ` obj.sex = 'man'; // 自动调用set方法设置sex的值`
-     
-     `console.log(obj.sex);  // 自动调用get方法获取sex值`
+ ```
+    var obj = { 
+     get sex() { return this._sex }, 
+     set sex(val) { this._sex = val }
+    };
+    或者 
+    var obj = Object.create(null,
+    { 
+      sex: { 
+        get: function() { return this._sex; }, 
+        set: function(val) { this._sex = val; } 
+        } 
+    };);
+    
+    obj.sex = 'man'; // 自动调用set方法设置sex的值
+    
+    console.log(obj.sex);  // 自动调用get方法获取sex值
+ ```
 3. obj上的方法
  - 对象是否含有当前属性—obj.hasOwnProperty, obj.prototype.hasOwnProperty
  - 是否是某对象的原型—obj.isPrototypeOf, obj.prototype.isPrototypeOf
@@ -50,3 +60,41 @@
 - handler.preventExtensions() —用于拦截Object.preventExtensions().
 - handler.set() —用于拦截设置属性值的操作。
 - handler.setPrototypeOf() —用来拦截 Object.setPrototypeOf().
+
+7. Symbol类型，一种新的原始数据类型Symbol，表示独一无二的值。
+- Symbol函数可以接受一个字符串作为参数，表示对Symbol实例的描述，主要是为了在控制台显示，或者转为字符串时，比较容易区分。var s1 = Symbol();var s2 = Symbol('test');
+- 作为属性名的Symbol
+
+```
+   var mySymbol = Symbol();
+   // 第一种写法
+   var a = {};
+   a[mySymbol] = 'Hello!';
+   // 第二种写法
+   var a = {
+     [mySymbol]: 'Hello!'
+   };
+   // 第三种写法
+   var a = {};
+   Object.defineProperty(a, mySymbol, { value: 'Hello!' });
+   // 以上写法都得到同样结果
+   a[mySymbol] // "Hello!"
+```
+- Symbol.for()，Symbol.keyFor()
+
+    Symbol.for机制有点类似于单例模式，首先在全局中搜索有没有以该参数作为名称的Symbol值，如果有，就返回这个Symbol值，否则就新建并返回一个以该字符串为名称的Symbol值。和直接的Symbol就点不同了。
+    
+    Symbol.keyFor方法返回一个已登记的Symbol类型值的key。实质就是检测该Symbol是否已创建
+```
+    var s1 = Symbol.for('foo');
+    var s2 = Symbol.for('foo');
+    
+    s1 === s2 // true
+    
+    var s1 = Symbol.for("foo");
+    Symbol.keyFor(s1) // "foo"
+    
+    var s2 = Symbol("foo");
+    Symbol.keyFor(s2) // undefined
+
+```
