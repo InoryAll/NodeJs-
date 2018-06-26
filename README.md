@@ -98,3 +98,100 @@
     Symbol.keyFor(s2) // undefined
 
 ```
+8. Map对象的使用
+- Map.prototype.size
+- Map.prototype.clear()
+- Map.prototype.delete(key)
+- Map.prototype.entries()
+- Map.prototype.forEach(callbackFn[, thisArg])
+- Map.prototype.get(key)
+- Map.prototype.has(key)
+- Map.prototype.keys()
+- Map.prototype.set(key, value)
+- Map.prototype.values()
+```
+    // Map的定义以及设置、取值
+    var myMap = new Map();
+    
+    var keyString = 'a string',
+        keyObj = {},
+        keyFunc = function() {};
+    
+    // setting the values
+    myMap.set(keyString, "value associated with 'a string'");
+    myMap.set(keyObj, 'value associated with keyObj');
+    myMap.set(keyFunc, 'value associated with keyFunc');
+    
+    myMap.size; // 3
+    
+    // getting the values
+    myMap.get(keyString);    // "value associated with 'a string'"
+    myMap.get(keyObj);       // "value associated with keyObj"
+    myMap.get(keyFunc);      // "value associated with keyFunc"
+    
+    myMap.get('a string');   // "value associated with 'a string'"
+                             // because keyString === 'a string'
+    myMap.get({});           // undefined, because keyObj !== {}
+    myMap.get(function() {}) // undefined, because keyFunc !== function () {}
+```
+```
+    // Map的遍历方法for...of以及forEach
+    var myMap = new Map();
+    myMap.set(0, 'zero');
+    myMap.set(1, 'one');
+    for (var [key, value] of myMap) {
+      console.log(key + ' = ' + value);
+    }
+    // 0 = zero
+    // 1 = one
+    
+    for (var key of myMap.keys()) {
+      console.log(key);
+    }
+    // 0
+    // 1
+    
+    for (var value of myMap.values()) {
+      console.log(value);
+    }
+    // zero
+    // one
+    
+    for (var [key, value] of myMap.entries()) {
+      console.log(key + ' = ' + value);
+    }
+    // 0 = zero
+    // 1 = one
+    
+    myMap.forEach(function(value, key) {
+      console.log(key + ' = ' + value);
+    });
+    // Will show 2 logs; first with "0 = zero" and second with "1 = one"
+```
+```
+    // Map的初始化
+    var first = new Map([
+      [1, 'one'],
+      [2, 'two'],
+      [3, 'three'],
+    ]);
+    
+    var second = new Map([
+      [1, 'uno'],
+      [2, 'dos']
+    ]);
+    
+    // Merge two maps. The last repeated key wins.
+    // Spread operator essentially converts a Map to an Array
+    var merged = new Map([...first, ...second]);
+    
+    console.log(merged.get(1)); // uno
+    console.log(merged.get(2)); // dos
+    console.log(merged.get(3)); // three
+```
+9. Assert，断言
+- assert(value[,message])/assert(value[,message])
+    assert()是assert.ok()的简写方式，两者用法一样。
+    如果value的值为true，那么什么也不会发生。如果value为false，将抛出一个信息为message的错误。
+10. Function.length
+- length是函数对象的一个属性值，指该函数有多少个必须要传入的参数，即形参的个数。形参的数量不包括剩余参数个数，仅包括第一个具有默认值之前的参数个数。与之对比的是，  arguments.length 是函数被调用时实际传参的个数。
